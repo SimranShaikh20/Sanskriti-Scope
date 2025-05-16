@@ -1,43 +1,43 @@
 import streamlit as st
-import pandas as pd
-import snowflake.connector
+st.set_page_config(page_title="Cultural Lens", layout="wide")
 
-# Title
-st.title("Incredible India - Cultural Art Forms & Responsible Tourism")
+st.image(r'images/Traveller Image.png')
 
-# Snowflake connection
-conn = snowflake.connector.connect(
-    user=st.secrets["snowflake"]["user"],
-    password=st.secrets["snowflake"]["password"],
-    account=st.secrets["snowflake"]["account"],
-    warehouse=st.secrets["snowflake"]["warehouse"],
-    database=st.secrets["snowflake"]["database"],
-    schema=st.secrets["snowflake"]["schema"],
-    role=st.secrets["snowflake"]["role"]
-)
+st.title("🧭 Cultural Lens")
+st.markdown("""
+Welcome to **Cultural Lens**, a data-driven platform to explore, preserve, and promote India’s diverse art forms through responsible tourism.
 
-# Fetch data
-cur = conn.cursor()
-cur.execute("SELECT * FROM ARTS")  # change table name if needed
-df = cur.fetch_pandas_all()
+### 🔍 What you can do:
+- **Explore endangered art forms** across India
+- **Predict tourism trends** for cultural hotspots
+- **Generate personalized travel spots** to support lesser-known traditions
+""")
 
-# Filters
-region_filter = st.selectbox("Select Address", ["All"] + sorted(df['ADDRESS'].unique().tolist()))
-endangered_filter = st.checkbox("Show only endangered art forms")
+# Add a sidebar with navigation options
+st.sidebar.header("Navigate")
+st.sidebar.markdown("""
+- 🗺️ **Explore Regions**: Discover art forms by regions
+- 🛤️ **Plan Your Journey**: Create custom travel places
+- 🌟 **Contribute**: Share your experiences and insights
+""")
 
-# Apply filters
-if region_filter != "All":
-    df = df[df['ADDRESS'] == region_filter]
-if endangered_filter:
-    df = df[df['ENDANGERED'] == True]
+# Add a call-to-action section
+st.markdown("""
+## 🌟 Why Cultural Lens?
+India is home to a treasure trove of art forms, many of which are at risk of fading away. By exploring and supporting these traditions, you become a part of their preservation story.
 
-# Show table
-st.dataframe(df)
+### 📌 Join the Movement
+- **Learn** about the rich culture of India
+- **Support** artisans and local communities
+- **Experience** the joy of responsible tourism
 
-# Stats
-st.markdown("### UNESCO Listed Count")
-st.write(df["UNESCO_LISTED"].value_counts())
+---
+Use the left sidebar to start your cultural journey! 🎨🛤️📈
+""")
 
-# Close connection
-cur.close()
-conn.close()
+# Add a footer with contact information
+st.markdown("""
+📬 **Contact Us**: For inquiries, collaborations, or feedback, reach out at [cultural.lens@example.com](mailto:cultural.lens@example.com)
+
+🌐 **Follow Us**: Stay updated on [Instagram](https://instagram.com/cultural_lens) | [Twitter](https://twitter.com/cultural_lens)
+""")
