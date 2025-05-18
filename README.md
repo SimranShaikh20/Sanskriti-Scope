@@ -1,10 +1,10 @@
-# Cultural Lens 🌍✨  
+# SanskritiScope 🌍✨  
 **Preserving India's Heritage Through Data & Responsible Tourism**
 
 ---
 
 ## 📌 Project Overview  
-**Cultural Lens** is an AI-powered platform designed to promote **sustainable tourism** and preserve **endangered Indian art forms**. By leveraging data-driven insights, interactive maps, and an AI chatbot, it connects travelers with lesser-known cultural sites, festivals, and heritage experiences across India.  
+**SanskritiScope** is an AI-powered platform designed to promote **sustainable tourism** and preserve **endangered Indian art forms**. By leveraging data-driven insights, interactive maps, and an AI chatbot, it connects travelers with lesser-known cultural sites, festivals, and heritage experiences across India.  
 
 ### 🎯 Key Objectives  
 - **Discover**: Explore endangered art forms using interactive maps and filters.  
@@ -83,7 +83,7 @@ graph TD
     B -->|Questions| E[Groq API]
     E -->|Answers| B
     B -->|Visualize| A
- ```
+```
 
 ## ⚙️ How It Works
 
