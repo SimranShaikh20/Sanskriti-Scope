@@ -2,27 +2,28 @@ from haversine import haversine
 import pandas as pd
 
 def get_route_recommendations(df, start_district, top_n=4):
-    if start_district not in df["Region"].values:
-        return []
+    # Ensure numeric lat/lon
+    df["LATITUDE"] = pd.to_numeric(df["LATITUDE"], errors='coerce')
+    df["LONGITUDE"] = pd.to_numeric(df["LONGITUDE"], errors='coerce')
+    df = df.dropna(subset=["LATITUDE", "LONGITUDE"])
 
-    # Get origin
-    origin = df[df["Region"] == start_district].iloc[0]
-    origin_coords = (origin["latitude"], origin["longitude"])
+    if start_district not in df["REGION"].values:
+        return pd.DataFrame()
 
-    # Exclude the starting district
-    df_rest = df[df["Region"] != start_district].copy()
+    origin = df[df["REGION"] == start_district].iloc[0]
+    origin_coords = (origin["LATITUDE"], origin["LONGITUDE"])
 
-    # Calculate distances
-    df_rest["distance_km"] = df_rest.apply(
-        lambda row: haversine(origin_coords, (row["latitude"], row["longitude"])), axis=1
+    df_rest = df[df["REGION"] != start_district].copy()
+
+    df_rest["DISTANCE_KM"] = df_rest.apply(
+        lambda row: haversine(origin_coords, (row["LATITUDE"], row["LONGITUDE"])), axis=1
     )
 
-    # Score destinations: endangered > UNESCO > closer distance
-    df_rest["score"] = (
-        df_rest["Endangered"].apply(lambda x: 2 if x == "Endangered" else 1)
-        + df_rest["UNESCO Listed"].apply(lambda x: 1 if x == "Yes" else 0)
-        - 0.01 * df_rest["distance_km"]
+    df_rest["SCORE"] = (
+        df_rest["ENDANGERED"].apply(lambda x: 2 if x == "Endangered" else 1)
+        + df_rest["UNESCOLISTED"].apply(lambda x: 1 if x == "Yes" else 0)
+        - 0.01 * df_rest["DISTANCE_KM"]
     )
 
-    recommendations = df_rest.sort_values("score", ascending=False).head(top_n)
+    recommendations = df_rest.sort_values("SCORE", ascending=False).head(top_n)
     return recommendations
