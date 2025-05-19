@@ -3,6 +3,7 @@ from snowflake.snowpark import Session
 import pandas as pd
 import folium
 from streamlit_folium import st_folium
+from folium.plugins import MarkerCluster
 
 # --- Page Configuration ---
 st.set_page_config(page_title="Endangered Art Forms Explorer", layout="wide")
@@ -28,27 +29,22 @@ session = create_session()
 # --- Load Data from Snowflake ---
 df = session.table("HERITAGE_DATA").to_pandas()
 
-# Normalize region for filtering
+# Normalize region if needed
 df["REGION_CLEAN"] = df["REGION"].str.lower()
 
 # --- UI ---
 st.markdown("## 🎨 Endangered Art Forms Explorer")
 st.markdown("---")
 
-# --- State Multi-Select ---
-unique_states = sorted(df["REGION"].dropna().unique())
-states = st.multiselect(
-    "Select State(s)",
-    options=unique_states,
-    default=unique_states,
-    placeholder="Choose one or more states to filter by"
-)
+# --- Dropdown for Art Form Selection ---
+artform_list = sorted(df["ARTFORM"].dropna().unique())
+selected_artform = st.selectbox("🎭 Select an Art Form", ["--Select--"] + artform_list)
 
-# --- Filter Data ---
-selected_states_lower = [s.lower() for s in states]
-filtered_df = df[df["REGION_CLEAN"].apply(lambda x: any(state in x for state in selected_states_lower))]
-filtered_df = df[df["REGION_CLEAN"].isin(selected_states_lower)]
-
+# --- Filtering based on dropdown only ---
+if selected_artform == "--Select--":
+    filtered_df = df.copy()
+else:
+    filtered_df = df[df["ARTFORM"] == selected_artform]
 
 # --- Display Filtered Table ---
 st.subheader("📑 Filtered Art Forms")
@@ -56,23 +52,31 @@ if not filtered_df.empty:
     display_df = filtered_df.drop(columns=["REGION_CLEAN"])
     st.dataframe(display_df, use_container_width=True, hide_index=True)
 else:
-    st.warning("No art forms found for the selected state(s).")
+    st.warning("No art forms found matching your selection.")
 
-# --- Map Plotting ---
+# --- Map Plotting with Marker Clustering ---
 st.subheader("📍 Art Form Locations")
 map_center = [20.59, 78.96]
 m = folium.Map(location=map_center, zoom_start=5)
+marker_cluster = MarkerCluster().add_to(m)
 
 for _, row in filtered_df.iterrows():
     try:
         lat = float(row["LATITUDE"])
         lon = float(row["LONGITUDE"])
+        popup_html = f"""
+        <b>{row['ARTFORM']}</b><br>
+        Region: {row['REGION']}<br>
+        Endangered: {row['ENDANGERED']}<br>
+        Description: {row.get('DESCRIPTION', 'No description')}
+        """
         folium.Marker(
             location=[lat, lon],
-            popup=f'{row["ARTFORM"]} ({row["REGION"]})',
-            icon=folium.Icon(color="red" if row["ENDANGERED"] == "Yes" else "blue")
-        ).add_to(m)
-    except:
+            popup=popup_html,
+            icon=folium.Icon(color="red" if str(row["ENDANGERED"]).lower() == "yes" else "blue")
+        ).add_to(marker_cluster)
+    except Exception:
         continue
 
+# --- Display Map ---
 st_folium(m, use_container_width=True)
