@@ -225,6 +225,8 @@ cultural-lens/
 │ ├── 3_🤖_Chatbot.py                       # Chatbot integration
 │ └── 4_📆_Seasonality_&_Cultural_Calendar.py # Calendar of cultural events
 ├── 📂 venv/                # Virtual environment 
+├── 📂 Presentation/   
+│ ├── SanskritiScope-AI-Powered-Platform-for-Sustainable-Cultural-Tourism-in-India.pptx
          
 ```
 
