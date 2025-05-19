@@ -239,15 +239,15 @@ We welcome contributions to enhance Cultural Lens! To contribute:
 1. Fork the repository.  
 2. Create a new branch:  
    ```bash
-   git checkout -b feature/<your-feature>
+   https://github.com/SimranShaikh20/SanskritiScope.git
    ```
 3. Commit your changes:  
    ```bash
-   git commit -m "Add <your-feature>"
+   git commit -m "Add SanskritiScope"
    ```
 4. Push to the branch:  
    ```bash
-   git push origin feature/<your-feature>
+   git push origin feature/SanskritiScope
    ```
 5. Open a Pull Request.
 
