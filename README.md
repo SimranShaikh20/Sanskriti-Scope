@@ -166,7 +166,7 @@ def calculate_score(row):
 
 **Clone the Repository:**
 ```bash
-git clone https://github.com/<your-username>/cultural-lens.git
+git clone https://github.com/SimranShaikh20/SanskritiScope.git
 cd cultural-lens
 ```
 
