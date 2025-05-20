@@ -26,7 +26,7 @@ jobs:
 
     - name: 🧪 Run Streamlit syntax check (optional)
       run: |
-        streamlit run app.py --server.headless true &
+        streamlit run  🏠Home.py --server.headless true &
         sleep 10
         pkill streamlit
 
