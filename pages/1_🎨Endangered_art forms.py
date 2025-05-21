@@ -27,7 +27,21 @@ def create_session():
 session = create_session()
 
 # --- Load Data from Snowflake ---
-df = session.table("HERITAGE_DATA").to_pandas()
+try:
+    # Optional: View tables in schema to confirm availability
+    st.write("📦 Available tables in schema:")
+    tables_df = session.sql("SHOW TABLES IN SCHEMA CULTURAL_DB.CULTURAL_SCHEMA").to_pandas()
+    st.dataframe(tables_df)
+
+    # Fetch data using fully qualified table name
+    query = "SELECT * FROM CULTURAL_DB.CULTURAL_SCHEMA.HERITAGE_DATA"
+    df = session.sql(query).to_pandas()
+    st.success("✅ Data fetched successfully from HERITAGE_DATA!")
+
+except Exception as e:
+    st.error("❌ Failed to load data from Snowflake.")
+    st.exception(e)
+    st.stop()
 
 # Normalize region if needed
 df["REGION_CLEAN"] = df["REGION"].str.lower()

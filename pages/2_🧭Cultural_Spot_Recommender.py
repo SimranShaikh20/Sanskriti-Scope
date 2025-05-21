@@ -23,8 +23,22 @@ def create_session():
 session = create_session()
 
 # --- Load Data from Snowflake ---
-df = session.table("HERITAGE_DATA").to_pandas()
+try:
+    # List all available tables for debugging
+    tables_df = session.sql("SHOW TABLES IN SCHEMA CULTURAL_DB.CULTURAL_SCHEMA").to_pandas()
+    st.write("📋 Available Tables:")
+    st.dataframe(tables_df)
 
+    # Read from fully qualified table name
+    df = session.table("CULTURAL_DB.CULTURAL_SCHEMA.HERITAGE_DATA").to_pandas()
+    st.success("✅ Data loaded from HERITAGE_DATA.")
+
+except Exception as e:
+    st.error("❌ Failed to load data from Snowflake.")
+    st.exception(e)
+    st.stop()
+
+# --- App UI ---
 st.title("🛤️ Cultural Spots Recommender")
 
 # --- User Input ---
@@ -39,15 +53,16 @@ if recommended.empty:
 else:
     st.subheader("📍 Suggested Places")
 
-    # Show Table (use uppercase column names)
+    # Display filtered table
     st.dataframe(
         recommended[["ARTFORM", "REGION", "ENDANGERED", "UNESCOLISTED", "DISTANCE_KM"]],
         hide_index=True
     )
 
-    # Map Display
+    # Display map with markers
     m = folium.Map(location=[recommended["LATITUDE"].mean(), recommended["LONGITUDE"].mean()], zoom_start=6)
 
+    # Start location marker
     start_row = df[df["REGION"] == start_district].iloc[0]
     folium.Marker(
         location=[start_row["LATITUDE"], start_row["LONGITUDE"]],
@@ -55,6 +70,7 @@ else:
         icon=folium.Icon(color="green")
     ).add_to(m)
 
+    # Recommended locations
     for _, row in recommended.iterrows():
         folium.Marker(
             location=[row["LATITUDE"], row["LONGITUDE"]],
@@ -64,9 +80,11 @@ else:
 
     st_folium(m, width=700)
 
+    # Explanation section
     st.markdown(
         """
         ### 📌 Why these recommendations?
-        These spots are selected based on their cultural significance and proximity to your starting point. By visiting these places, you contribute to the preservation of endangered art forms.
+        These spots are selected based on their cultural significance and proximity to your starting point. 
+        By visiting these places, you contribute to the preservation of endangered art forms.
         """
     )
