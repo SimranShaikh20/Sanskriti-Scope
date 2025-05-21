@@ -7,13 +7,13 @@ from recommender import get_route_recommendations
 
 # --- Snowflake Connection Parameters ---
 connection_parameters = {
-    "user": st.secrets["snowflake"]["user"],
-    "password": st.secrets["snowflake"]["password"],
-    "account": st.secrets["snowflake"]["account"],
-    "warehouse": st.secrets["snowflake"]["warehouse"],
-    "database": st.secrets["snowflake"]["database"],
-    "schema": st.secrets["snowflake"]["schema"],
-    "role": st.secrets["snowflake"]["role"]
+     "user": "SIMRANSHAIKH20",
+    "password": "SimranShaikh@20",
+    "account": "NJRTACQ-FA51430",
+    "warehouse": "COMPUTE_WH",
+    "database": "CULTURAL_DB",
+    "schema": "CULTURAL_SCHEMA",
+    "role": "ACCOUNTADMIN"
 }
 
 @st.cache_resource
