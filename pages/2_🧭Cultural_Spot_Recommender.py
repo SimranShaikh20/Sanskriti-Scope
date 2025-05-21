@@ -7,13 +7,13 @@ from recommender import get_route_recommendations
 
 # --- Snowflake Connection Parameters ---
 connection_parameters = {
-     "user": "SIMRANSHAIKH20",
-    "password": "SimranShaikh@20",
-    "account": "NJRTACQ-FA51430",
-    "warehouse": "COMPUTE_WH",
-    "database": "CULTURAL_DB",
-    "schema": "CULTURAL_SCHEMA",
-    "role": "ACCOUNTADMIN"
+     "user": "your user name",
+    "password": "your password",
+    "account": "your account name",
+    "warehouse": "your warehouse name",
+    "database": "your database name",
+    "schema": "your schema name",
+    "role": "your role name"
 }
 
 @st.cache_resource

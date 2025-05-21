@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # 🔐 Replace this with your real Groq API key
-API_KEY = "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"
+API_KEY = "enter your_groq_api_key_here"
 
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
@@ -31,7 +31,7 @@ def ask_llama(prompt):
         return f"❌ Error {response.status_code}: {response.text}"
 
 # --- Streamlit App ---
-st.title("🧠 Cultural Travel Chatbot (Groq + LLaMA-4)")
+st.title("🧠 Cultural Travel Chatbot ")
 
 user_input = st.text_input("Ask your cultural tourism question here:")
 
