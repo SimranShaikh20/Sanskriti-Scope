@@ -2,7 +2,7 @@ import streamlit as st
 import requests
 
 # 🔐 Replace this with your real Groq API key
-API_KEY = "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"
+API_KEY = "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"
 
 API_URL = "https://api.groq.com/openai/v1/chat/completions"
 
