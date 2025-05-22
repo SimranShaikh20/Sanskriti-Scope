@@ -10,14 +10,15 @@ st.set_page_config(page_title="Endangered Art Forms Explorer", layout="wide")
 
 # --- Snowflake Connection Parameters ---
 connection_parameters = {
-    "user": "your user name",
-    "password": "your password",
-    "account": "your account name",
-    "warehouse": "your warehouse name",
-    "database": "your database name",
-    "schema": "your schema name",
-    "role": "your role name"
+    "user": "SIMRANSHAIKH20",
+    "password": "SimranShaikh@20",
+    "account": "NJRTACQ-FA51430",
+    "warehouse": "COMPUTE_WH",
+    "database": "CULTURAL_DB",
+    "schema": "CULTURAL_SCHEMA",
+    "role": "ACCOUNTADMIN"
 }
+
 
 @st.cache_resource
 def create_session():
