@@ -13,7 +13,7 @@
 - **Promote**: Highlight local festivals and events to boost responsible tourism.  
 
 ---
-[Live App](https://sanskritiscope-buyqp6h4g78lndv6jddz3p.streamlit.app/)
+[Live App](https://sanskriti-scope-r2tot5cupch7vhy6wkqpr4.streamlit.app/)
 ---
 ## 🛠 Tech Stack  
 
